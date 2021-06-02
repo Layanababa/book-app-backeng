@@ -13,8 +13,8 @@ require('dotenv').config();
 
 
 const server = express();
-server.use(cors());
 server.use(express.json());
+server.use(cors());
 const PORT = process.env.PORT;
 
 
