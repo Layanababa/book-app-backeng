@@ -23,9 +23,11 @@ const PORT = process.env.PORT;
 server.get('/book',getBookHandler);
 server.post('/addBook',addBookHandler);
 server.delete('/deleteBook/:index',deleteBookHandler);
+server.put('/updateBook/:index',updateBookHandler)
+
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/myFavoriteBooks',
+mongoose.connect(process.env.MONGODB_URI,
    { useNewUrlParser: true, useUnifiedTopology: true });
 
 
@@ -164,6 +166,26 @@ function deleteBookHandler (req,res){
         ownerData[0].save();
         res.send(ownerData[0].books)
     })
+}
+
+function updateBookHandler (req,res){
+    console.log(req.body);
+
+    const {email,name,description,img,status}=req.body;
+    const index = Number(req.params.index);
+    ownerUser.findOne({email:email},(error,ownerData)=>{
+        // filter the cats for the owner and remove the one that matches the index
+        ownerData.books.splice(index,1,{
+            name: name,
+            description: description,
+            img:img,
+            status:status
+        })
+        
+        ownerData.save();
+        res.send(ownerData.books)
+    })
+
 }
 
 server.listen(PORT, () => {
