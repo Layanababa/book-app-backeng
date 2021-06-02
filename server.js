@@ -112,7 +112,7 @@ function seedOwnerUserCollection(){
    account1.save();
    account2.save();
 }
-
+// seedOwnerUserCollection();
 function getBookHandler(req,res){
    let userName=req.query.email;
    ownerUser.find({email:userName},function(err,ownerData){
